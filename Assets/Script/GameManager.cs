@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameData gameData;
+    public GameData gameData;
+    public bool isGameStarted;
 
     public static GameManager instance;
 
@@ -23,33 +24,62 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Init();
+        FetchSavedScore();
+        StopGame();
     }
 
-    private void Init()
+    public void StartGame()
     {
-        gameData = new GameData(0);
-        if(PlayerPrefs.HasKey(Constants.saveHighScore))
+        isGameStarted = true;
+    }
+
+    public void StopGame()
+    {
+        isGameStarted = false;
+        UIManager.instance.CreateGamePlayScreen();
+    }
+
+    public void UpdateHighScore (int highScore, int time)
+    {
+        if (highScore > gameData.highScore)
         {
-            gameData.highScore = PlayerPrefs.GetInt(Constants.saveHighScore);
+            gameData.highScore = highScore;
+            gameData.timeTaken = time;
+            SaveScore();
         }
     }
 
-    public void UpdateHighScore (int highScore)
+    private void FetchSavedScore()
     {
-        gameData.highScore = highScore;
+        gameData = new GameData(0, 0);
+        if (PlayerPrefs.HasKey(Constants.saveHighScore))
+        {
+            gameData.highScore = PlayerPrefs.GetInt(Constants.saveHighScore);
+        }
+
+        if (PlayerPrefs.HasKey(Constants.saveTime))
+        {
+            gameData.timeTaken = PlayerPrefs.GetInt(Constants.saveTime);
+        }
+    }
+
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt(Constants.saveHighScore, gameData.highScore);
+        PlayerPrefs.SetInt(Constants.saveTime, gameData.timeTaken);
     }
 
 }
 
-class GameData
+public class GameData
 {
     public int highScore;
-
+    public int timeTaken;
     public GameData () { }
-    public GameData(int score)
+    public GameData(int score, int time)
     {
         highScore = score;
+        timeTaken = time;
     }
 
 }
