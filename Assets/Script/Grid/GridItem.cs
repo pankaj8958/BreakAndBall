@@ -6,6 +6,7 @@ public class GridItem : MonoBehaviour
 {
     public TextMeshPro countText;
     public SpriteRenderer spriteGrid;
+    int count;
     int value;
     int row;
     int column;
@@ -13,13 +14,14 @@ public class GridItem : MonoBehaviour
     {
         row = gridData.row;
         column = gridData.column;
-        value = gridData.totalValue;
+        value = count = gridData.totalValue;
+        UIManager.instance.UpdateGridCount(+1);
         UpdateCountValue();
     }
 
     void UpdateCountValue ()
     {
-        countText.text = value.ToString();
+        countText.text = count.ToString();
         spriteGrid.color = GetSpriteColor();
     }
     
@@ -27,38 +29,52 @@ public class GridItem : MonoBehaviour
     {
         if(collision.gameObject.tag == "ball")
         {
-            value--;
-            if (value > 0)
+            count--;
+            if (count > 0)
+            {
                 UpdateCountValue();
+                UIManager.instance.UpdateScore(+1);
+            }
             else
-                Destroy(this.gameObject);
+            {
+                OnComplete();
+            }
+        }
+    }
+
+    void OnComplete()
+    {
+        if (count == 0)
+        {
+            UIManager.instance.UpdateGridCount(-1, true);
+            Destroy(this.gameObject);
         }
     }
 
     Color32 GetSpriteColor()
     {
         Color color = Color.green;
-        if (value > 0 && value < 10)
+        if (count > 0 && count < 10)
         {
             color = Color.green;
         }
-        else if (value >= 10 && value < 20)
+        else if (count >= 10 && count < 20)
         {
             color = Color.blue;
         }
-        else if (value >= 20 && value < 30)
+        else if (count >= 20 && count < 30)
         {
             color = Color.cyan;
         }
-        else if (value >= 30 && value < 40)
+        else if (count >= 30 && count < 40)
         {
             color = Color.yellow;
         }
-        else if (value >= 40 && value < 60)
+        else if (count >= 40 && count < 60)
         {
             color = Color.blue;
         }
-        else if (value >= 60)
+        else if (count >= 60)
         {
             color = Color.red;
         }

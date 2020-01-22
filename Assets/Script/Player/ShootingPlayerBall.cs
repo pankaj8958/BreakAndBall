@@ -6,17 +6,20 @@ public class ShootingPlayerBall : MonoBehaviour
 {
 	Transform ballTrans;
 	Rigidbody2D ballRigidbody;
-	float speed = 5;
+	float speed = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+		speed = Constants.ballSpeed;
 		ballTrans = this.gameObject.GetComponent<Transform>();
 	}
 
 	public void HideObject ()
 	{
 		this.gameObject.SetActive(false);
+		if (BallSpawner.spawnBallCount > 0)
+			BallSpawner.spawnBallCount--;		
 	}
 
 	public void ShowObject ()

@@ -10,10 +10,15 @@ public static class Constants
 	public const string screenGamePlayPanel_UI = "prefabs/UI/GamePlayPanel";
 
 	//Game constant Values
-	public const int maxBallSpawnCount = 10;
+	public const int maxBallSpawnCount = 60;
+	public const float ballSpeed = 4.5f;
+	public const int platformCount = 20;
+	public const int scoreCountMultiplier = 5;
+	public const int scoreTimeCountMultiplier = 2;
 	public const float gridPositionOffset = 1.5f;
 	public const int gridNumberOffset_Row = 2;
 	public const int gridNumberOffset_Column = 1;
+
 
 
 	//Save game constant Keys
@@ -27,4 +32,19 @@ public static class Constants
 		Ground,
 		none
 	};
+
+	public enum SCENE_NAME
+	{
+		MainMenuScene,
+		GamePlayScene
+	}
+
+	public enum SPAWNER_STATE
+	{
+		ideal,
+		shotting,
+		shooted,
+		finish,
+		none
+	}
 }

@@ -8,32 +8,60 @@ public class BallSpawner : MonoBehaviour
 	GameObject ballPrefab;
 	Vector2 initialPoint;
 	Vector2 finalPoint;
+
+
+	public static int spawnBallCount = 0;
+
+	public Constants.SPAWNER_STATE spawnerState;
+
 	public List<ShootingPlayerBall> shootingBallList;
     // Start is called before the first frame update
     void Start()
     {
+		spawnBallCount = 0;
+		spawnerState = Constants.SPAWNER_STATE.ideal;
 		shootingBallList = new List<ShootingPlayerBall>();
 		ballPrefab = Resources.Load(Constants.ballObjectPath) as GameObject;
     }
 
+	private void Update()
+	{
+		if(spawnerState == Constants.SPAWNER_STATE.shooted)
+		{
+			if (spawnBallCount <= 0)
+			{
+				UIManager.instance.GameLooseAction();
+				spawnerState = Constants.SPAWNER_STATE.finish;
+			}
+		}
+	}
+
 	private void OnMouseDown()
 	{
-
-		initialPoint = Input.mousePosition;
-		initialPoint = Camera.main.ScreenToWorldPoint(initialPoint);
-
+		if (spawnerState == Constants.SPAWNER_STATE.ideal)
+		{
+			spawnerState = Constants.SPAWNER_STATE.shotting;
+			initialPoint = Input.mousePosition;
+			initialPoint = Camera.main.ScreenToWorldPoint(initialPoint);
+		}
 	}
+
+	
 
 	private void OnMouseUp()
 	{
-		finalPoint = Input.mousePosition;
-		finalPoint = Camera.main.ScreenToWorldPoint(finalPoint);
+		if (spawnerState == Constants.SPAWNER_STATE.shotting)
+		{
+			spawnerState = Constants.SPAWNER_STATE.shooted;
+			finalPoint = Input.mousePosition;
+			finalPoint = Camera.main.ScreenToWorldPoint(finalPoint);
 
-		Vector2 ballDirection = (finalPoint - initialPoint).normalized;
+			Vector2 ballDirection = (finalPoint - initialPoint).normalized;
 
-		Debug.DrawLine(initialPoint, initialPoint + ballDirection, Color.red, Mathf.Infinity);
+			this.GetComponent<SpriteRenderer>().enabled = false;
 
-		SpawnBallToDirection(-ballDirection);
+			SpawnBallToDirection(-ballDirection);
+		}
 	}
 
 	void SpawnBallToDirection (Vector2 direction)
@@ -63,7 +91,7 @@ public class BallSpawner : MonoBehaviour
 					shootingBallList.Add(shootingPlayerBall);
 				}
 				shootingPlayerBall.AddForceToDirection(direction);
-
+				spawnBallCount++;
 				yield return new WaitForSeconds(delay);
 			}
 			else
@@ -82,29 +110,6 @@ public class BallSpawner : MonoBehaviour
 
 		}
 	}
-
-	void DisplayBallPlayer(int index)
-	{
-		if (shootingBallList != null && shootingBallList.Count > 0)
-		{
-
-			if(index < shootingBallList.Count)
-				shootingBallList[index].ShowObject();
-			
-		}
-	}
-
-	void DisableAllPlayerBall ()
-	{
-		if(shootingBallList != null && shootingBallList.Count > 0)
-		{
-			for (int i = 0; i < shootingBallList.Count; i++)
-			{
-				shootingBallList[i].HideObject();
-			}
-		}
-	}
-
 
 	public void RepositionSpawner (Vector2 newPos)
 	{

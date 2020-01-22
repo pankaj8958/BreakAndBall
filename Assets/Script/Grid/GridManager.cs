@@ -50,7 +50,7 @@ public class GridManager : MonoBehaviour
         column = horizontal * 2;
         row = vertical * 2;
         gridArray = new Grid[column,row];
-        Debug.Log("Row: " + row + " Column: " + column);
+
     }
 
     void InitGridsData()
