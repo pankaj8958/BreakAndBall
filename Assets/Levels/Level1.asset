@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   levelGrids:
-  - totalValue: 30
+  - totalValue: 20
     row: 9
     column: 3
   - totalValue: 12

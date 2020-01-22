@@ -159,19 +159,28 @@ public class UIManager : MonoBehaviour
 		}
 	}
 
-	public void GameFinishAction ()
+	void GameFinishAction ()
 	{
-		if (isGameFinish)
+		FinalScore();
+		GameManager.instance.UpdateHighScore(highScore, timeTaken);
+		GameManager.instance.StopGame();
+		InitUIValue();
+		GameManager.instance.SwitchScene(Constants.SCENE_NAME.MainMenuScene);
+		
+	}
+
+	public void GameStateChange()
+	{
+		if(isGameFinish)
 		{
-			FinalScore();
-			GameManager.instance.UpdateHighScore(highScore, timeTaken);
-			GameManager.instance.StopGame();
-			InitUIValue();
-			GameManager.instance.SwitchScene(Constants.SCENE_NAME.MainMenuScene);
+			GameFinishAction();
+		} else
+		{
+			GameLooseAction();
 		}
 	}
 
-	public void GameLooseAction()
+	void GameLooseAction()
 	{
 		FinalScore();
 		GameManager.instance.currentLevelData = new GameData(0, 0);

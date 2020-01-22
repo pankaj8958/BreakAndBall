@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         FetchSavedScore();
         StopGame();
     }

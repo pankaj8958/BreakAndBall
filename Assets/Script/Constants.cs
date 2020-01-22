@@ -12,7 +12,7 @@ public static class Constants
 	//Game constant Values
 	public const int maxBallSpawnCount = 60;
 	public const float ballSpeed = 4.5f;
-	public const int platformCount = 20;
+	public const int platformCount = 40;
 	public const int scoreCountMultiplier = 5;
 	public const int scoreTimeCountMultiplier = 2;
 	public const float gridPositionOffset = 1.5f;
