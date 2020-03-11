@@ -30,7 +30,8 @@ public class BallSpawner : MonoBehaviour
 		{
 			if (spawnBallCount <= 0)
 			{
-				UIManager.instance.GameStateChange();
+				if (UIManager.instance)
+					UIManager.instance.GameStateChange();
 				spawnerState = Constants.SPAWNER_STATE.finish;
 			}
 		}

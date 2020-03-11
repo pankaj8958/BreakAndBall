@@ -15,7 +15,8 @@ public class GridItem : MonoBehaviour
         row = gridData.row;
         column = gridData.column;
         value = count = gridData.totalValue;
-        UIManager.instance.UpdateGridCount(+1);
+        if(UIManager.instance)
+            UIManager.instance.UpdateGridCount(+1);
         UpdateCountValue();
     }
 
@@ -33,7 +34,8 @@ public class GridItem : MonoBehaviour
             if (count > 0)
             {
                 UpdateCountValue();
-                UIManager.instance.UpdateScore(+1);
+                if (UIManager.instance)
+                    UIManager.instance.UpdateScore(+1);
             }
             else
             {
@@ -45,8 +47,10 @@ public class GridItem : MonoBehaviour
     void OnComplete()
     {
         if (count == 0)
+        if(UIManager.instance)
         {
-            UIManager.instance.UpdateGridCount(-1, true);
+            if (UIManager.instance)
+                 UIManager.instance.UpdateGridCount(-1, true);
             Destroy(this.gameObject);
         }
     }

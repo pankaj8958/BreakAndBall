@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         isGameStarted = true;
-        UIManager.instance.UpdateHudStatus(true);
+        if (UIManager.instance)
+            UIManager.instance.UpdateHudStatus(true);
     }
 
     public void StopGame()
